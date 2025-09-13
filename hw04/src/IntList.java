@@ -43,7 +43,10 @@ public class IntList {
      */
     public static IntList incrRecursiveNondestructive(IntList L, int x) {
         // TODO: Fill in this code
-        return null;
+        IntList output = new IntList(L.first + x, null);
+        if (L.rest == null) return output;
+        output.rest = incrRecursiveNondestructive(L.rest, x);
+        return output;
     }
 
     /**
