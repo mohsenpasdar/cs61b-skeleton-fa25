@@ -69,7 +69,16 @@ public class IntList {
      */
     public static IntList incrIterativeNondestructive(IntList L, int x) {
         // TODO: Fill in this code
-        return null;
+        IntList output = new IntList(L.first + x, null);
+
+        IntList currentOriginal = L.rest;
+        IntList currentNew = output;
+        while (currentOriginal != null) {
+            currentNew.rest = new IntList(currentOriginal.first + x, null);
+            currentOriginal = currentOriginal.rest;
+            currentNew = currentNew.rest;
+        }
+        return output;
     }
 
     /**
