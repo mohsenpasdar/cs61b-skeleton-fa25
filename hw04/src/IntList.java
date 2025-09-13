@@ -89,7 +89,13 @@ public class IntList {
      */
     public static IntList incrIterativeDestructive(IntList L, int x) {
         // TODO: Fill in this code
-        return null;
+        L.first += x;
+        IntList current = L.rest;
+        while (current != null) {
+            current.first += x;
+            current = current.rest;
+        }
+        return L;
     }
 
     /**
