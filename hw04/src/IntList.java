@@ -104,7 +104,12 @@ public class IntList {
      */
     public static IntList concatenate(IntList L1, IntList L2) {
         // TODO: Fill in this code
-        return null;
+        IntList current = L1;
+        while (current.rest != null) {
+            current = current.rest;
+        }
+        current.rest = L2;
+        return L1;
     }
 
     /*
