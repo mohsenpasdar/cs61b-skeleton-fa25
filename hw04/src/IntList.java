@@ -141,5 +141,7 @@ public class IntList {
      */
     public void addFirst(int x) {
         // Optional: Fill in this code
+        this.rest = new IntList(this.first, this.rest);
+        this.first = x;
     }
 }
