@@ -2,73 +2,47 @@ import edu.princeton.cs.algs4.In;
 import javassist.runtime.Inner;
 
 public class Stack {
-    private static class SLList {
-        private static class IntNode {
-            private final int item;
-            private IntNode next;
-            public IntNode(int item, IntNode next) {
-                this.item = item;
-                this.next = next;
-            }
-        }
+    private class IntNode {
+        private final int item;
+        private IntNode next;
 
-        private int size;
-        private final IntNode sentinel = new IntNode(63, null);;
-
-        public SLList() {
-            size = 0;
-        }
-
-        public SLList(int x) {
-            size = 1;
-            sentinel.next = new IntNode(x, null);
-        }
-
-        public void addFirst(int x) {
-            size++;
-            sentinel.next = new IntNode(x, sentinel.next);
-        }
-
-        public int removeFirst() {
-            size--;
-            int item = sentinel.next.item;
-            sentinel.next = sentinel.next.next;
-            return item;
-        }
-
-        public int sum() {
-            IntNode current = sentinel.next;
-            return helper(sentinel.next);
-        }
-
-        private static int helper(IntNode current) {
-            if (current == null) return 0;
-            return current.item + helper(current.next);
+        public IntNode(int item, IntNode next) {
+            this.item = item;
+            this.next = next;
         }
     }
 
-    private SLList linkedList;
+    private final IntNode sentinel;
+    private int size;
 
     public Stack() {
-        linkedList = new SLList();
+        sentinel = new IntNode(63, null);
+        size = 0;
     }
 
     public void push(int x) {
-        linkedList.addFirst(x);
+        sentinel.next = new IntNode(x, sentinel.next);
+        size++;
     }
 
     public int pop() {
-        return linkedList.removeFirst();
+        int topItem = sentinel.next.item;
+        sentinel.next = sentinel.next.next;
+        size--;
+        return topItem;
     }
 
     public int size() {
-        return linkedList.size;
+        return size;
+    }
+
+    public static int helper(IntNode current) {
+        if (current == null) return 0;
+        return current.item + helper(current.next);
     }
 
     public int sum() {
-        return linkedList.sum();
+        return helper(sentinel.next);
     }
-
-
 }
 
