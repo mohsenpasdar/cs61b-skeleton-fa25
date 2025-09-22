@@ -75,7 +75,7 @@ public class LinkedListDeque61B<T> implements Deque61B {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     /**
@@ -85,7 +85,7 @@ public class LinkedListDeque61B<T> implements Deque61B {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
