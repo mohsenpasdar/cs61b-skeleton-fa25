@@ -137,7 +137,13 @@ public class LinkedListDeque61B<T> implements Deque61B {
      */
     @Override
     public Object getRecursive(int index) {
-        return null;
+        if (index < 0 | index >= size) return null;
+        return helper(sentinel.next, index);
+    }
+
+    private Object helper(Node current, int i) {
+        if (i == 0) return current.item;
+        return helper(current.next, i - 1);
     }
 
     public static void main(String[] args) {

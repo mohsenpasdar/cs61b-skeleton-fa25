@@ -105,4 +105,26 @@ public class LinkedListDeque61BTest {
         assertThat(lld1.get(1)).isEqualTo(5);
         assertThat(lld1.get(2)).isEqualTo(6);
     }
+
+    @Test
+    /** This test validates the getRecursive method implemented by iteration, index i out of range. */
+    public void  testGetRecursiveOutOfIndex() {
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        lld1.addFirst(5);
+        lld1.addLast(6);
+        assertThat(lld1.getRecursive(-1)).isNull();
+        assertThat(lld1.getRecursive(5555)).isNull();
+    }
+
+    @Test
+    /** This test validates the getRecursive method implemented by iteration, index i in range. */
+    public void  testGetRecursive() {
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        lld1.addFirst(5);
+        lld1.addLast(6);
+        lld1.addFirst(3);
+        assertThat(lld1.getRecursive(0)).isEqualTo(3);
+        assertThat(lld1.getRecursive(1)).isEqualTo(5);
+        assertThat(lld1.getRecursive(2)).isEqualTo(6);
+    }
 }
