@@ -56,23 +56,25 @@ public class LinkedListDeque61BTest {
          assertThat(lld1.toList()).containsExactly(-2, -1, 0, 1, 2).inOrder();
      }
 
-     @Test
+    // Below, you'll write your own tests for LinkedListDeque61B.
+    @Test
     /** this test makes assertions about isEmpty method. */
     public void testIsEmpty() {
-         Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
-         assertThat(lld1.isEmpty()).isTrue();
-         lld1.addFirst(5);
-         assertThat(lld1.isEmpty()).isFalse();
-     }
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        assertThat(lld1.isEmpty()).isTrue();
+        lld1.addFirst(5);
+        assertThat(lld1.isEmpty()).isFalse();
+    }
 
-     @Test
-     /** this tests makes assertion about the size of an empty deque. */
-     public void testSizeZero() {
-         Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
-         assertThat(lld1.size()).isEqualTo(0);
-     }
+    @Test
+    /** this test makes assertion about the size of an empty deque. */
+    public void testSizeZero() {
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        assertThat(lld1.size()).isEqualTo(0);
+    }
 
-    @Test/** this tests makes assertion about the size of an empty deque. */
+    @Test
+    /** this test makes assertion about the size of an empty deque. */
     public void testSizeFour() {
         Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
         lld1.addFirst(5);
@@ -82,5 +84,25 @@ public class LinkedListDeque61BTest {
         assertThat(lld1.size()).isEqualTo(4);
     }
 
-    // Below, you'll write your own tests for LinkedListDeque61B.
+    @Test
+    /** This test validates the get method implemented by iteration, index i out of range. */
+    public void  testGetOutOfIndex() {
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        lld1.addFirst(5);
+        lld1.addLast(6);
+        assertThat(lld1.get(-1)).isNull();
+        assertThat(lld1.get(5555)).isNull();
+    }
+
+    @Test
+    /** This test validates the get method implemented by iteration, index i in range. */
+    public void  testGet() {
+        Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        lld1.addFirst(5);
+        lld1.addLast(6);
+        lld1.addFirst(3);
+        assertThat(lld1.get(0)).isEqualTo(3);
+        assertThat(lld1.get(1)).isEqualTo(5);
+        assertThat(lld1.get(2)).isEqualTo(6);
+    }
 }
