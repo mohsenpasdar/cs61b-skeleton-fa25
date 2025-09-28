@@ -76,7 +76,15 @@ public class ArrayDeque61B<T> implements Deque61B {
      */
     @Override
     public Object removeFirst() {
-        return null;
+        if (isEmpty()) {
+            return null;
+        }
+
+        size--;
+        nextFirst = (nextFirst + 1) % items.length;
+        T output = items[nextFirst];
+        items[nextFirst] = null;
+        return output;
     }
 
     /**
@@ -86,7 +94,14 @@ public class ArrayDeque61B<T> implements Deque61B {
      */
     @Override
     public Object removeLast() {
-        return null;
+        if (isEmpty()) {
+            return null;
+        }
+
+        T output = items[(nextFirst + size) % items.length];
+        items[(nextFirst + size) % items.length] = null;
+        size--;
+        return output;
     }
 
     /**

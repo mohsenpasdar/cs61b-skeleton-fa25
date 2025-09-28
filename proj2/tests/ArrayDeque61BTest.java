@@ -99,4 +99,68 @@ public class ArrayDeque61BTest {
         lld1.addFirst(0);
         assertThat(lld1.size()).isEqualTo(4);
     }
+
+    @Test
+    /** In this test, we have three different assert statements that verify that removeFirst works correctly. */
+    public void removeFirstTestBasic() {
+        Deque61B<String> lld1 = new ArrayDeque61B<>();
+        lld1.addFirst("1"); // after this call we expect: ["1"]
+        lld1.addLast("2"); // after this call we expect: ["1", "2"]
+        lld1.addFirst("0"); // after this call we expect: ["0", "1", "2"]
+
+        String removedItem = lld1.removeFirst(); // after this call we expect: ["1", "2"]
+        assertThat(removedItem).isEqualTo("0");
+        assertThat(lld1.toList()).containsExactly("1", "2").inOrder();
+
+        removedItem = lld1.removeFirst(); // after this call we expect: ["2"]
+        assertThat(removedItem).isEqualTo("1");
+        assertThat(lld1.toList()).containsExactly("2").inOrder();
+
+        removedItem = lld1.removeFirst(); // after this call we expect: [""]
+        assertThat(removedItem).isEqualTo("2");
+        assertThat(lld1.toList()).isEmpty();
+
+        removedItem = lld1.removeFirst(); // after this call we expect: ["2"]
+        assertThat(removedItem).isNull();
+        assertThat(lld1.toList()).isEmpty();
+    }
+
+    @Test
+    /** In this test, we have different assert statements that verify that removeLast works correctly. */
+    public void removeLastTestBasic() {
+        Deque61B<String> lld1 = new ArrayDeque61B<>();
+
+        lld1.addFirst("1"); // after this call we expect: ["1"]
+        lld1.addLast("2"); // after this call we expect: ["1", "2"]
+
+        String removedItem = lld1.removeLast(); // after this call we expect: ["1"]
+        assertThat(removedItem).isEqualTo("2");
+        assertThat(lld1.toList()).containsExactly("1").inOrder();
+
+        removedItem = lld1.removeLast(); // after this call we expect: []
+        assertThat(removedItem).isEqualTo("1");
+        assertThat(lld1.toList()).isEmpty();
+
+        removedItem = lld1.removeFirst(); // after this call we expect: ["2"]
+        assertThat(removedItem).isNull();
+        assertThat(lld1.toList()).isEmpty();
+    }
+
+    @Test
+    /** This test performs interspersed addFirst and addLast calls. */
+    public void removeFirstAndRemoveLastTest() {
+        Deque61B<Integer> lld1 = new ArrayDeque61B<>();
+
+        lld1.addLast(0);   // [0]
+        lld1.addLast(1);   // [0, 1]
+        lld1.addFirst(-1); // [-1, 0, 1]
+
+        int removedItem = lld1.removeLast(); // after this call we expect: // [-1, 0]
+        assertThat(removedItem).isEqualTo(1);
+        assertThat(lld1.toList()).containsExactly(-1, 0).inOrder();
+
+        removedItem = lld1.removeFirst(); // after this call we expect: // [0]
+        assertThat(removedItem).isEqualTo(-1);
+        assertThat(lld1.toList()).containsExactly(0).inOrder();
+    }
 }
