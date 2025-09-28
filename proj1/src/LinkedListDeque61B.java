@@ -97,11 +97,11 @@ public class LinkedListDeque61B<T> implements Deque61B {
     public Object removeFirst() {
         if (isEmpty()) return null;
 
+        Object output = sentinel.next.item;
         size--;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev.next = null;
         sentinel.next.prev.prev = null;
-        Object output = sentinel.next.prev.item;
         sentinel.next.prev = sentinel;
         return output;
     }
@@ -114,7 +114,14 @@ public class LinkedListDeque61B<T> implements Deque61B {
     @Override
     public Object removeLast() {
         if (isEmpty()) return null;
-        return null;
+
+        Object output = sentinel.prev.item;
+        size--;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next.next = null;
+        sentinel.prev.next.prev = null;
+        sentinel.prev.next = sentinel;
+        return output;
     }
 
     /**
