@@ -101,6 +101,27 @@ public class ArrayDeque61BTest {
     }
 
     @Test
+    /** In this test, we test the toList method functionality on a non-empty liat. */
+    public void toListNonempty() {
+        Deque61B<String> lld1 = new ArrayDeque61B<>();
+        lld1.addFirst("1"); // after this call we expect: ["1"]
+        lld1.addLast("2"); // after this call we expect: ["1", "2"]
+        lld1.addFirst("0"); // after this call we expect: ["0", "1", "2"]
+
+        assertThat(lld1.toList().size()).isEqualTo(3);
+        assertThat(lld1.toList()).containsExactly("0", "1", "2").inOrder();
+    }
+
+    @Test
+    /** In this test, we test the toList method functionality on a empty liat. */
+    public void toListEmpty() {
+        Deque61B<String> lld1 = new ArrayDeque61B<>();
+
+        assertThat(lld1.toList().size()).isEqualTo(0);
+        assertThat(lld1.toList()).isEmpty();
+    }
+
+    @Test
     /** In this test, we have three different assert statements that verify that removeFirst works correctly. */
     public void removeFirstTestBasic() {
         Deque61B<String> lld1 = new ArrayDeque61B<>();
@@ -162,5 +183,39 @@ public class ArrayDeque61BTest {
         removedItem = lld1.removeFirst(); // after this call we expect: // [0]
         assertThat(removedItem).isEqualTo(-1);
         assertThat(lld1.toList()).containsExactly(0).inOrder();
+    }
+
+
+    @Test
+    /** In this test, we dd some elements to a deque and remove them all, then check that addFirst still works. */
+    public void addFirstAfterRemoveToEmpty() {
+        Deque61B<String> ad1 = new ArrayDeque61B<>();
+
+        ad1.addLast("front"); // after this call we expect: ["front"]
+        ad1.addLast("middle"); // after this call we expect: ["front", "middle"]
+        ad1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
+        ad1.removeFirst();
+        ad1.removeFirst();
+        ad1.removeFirst();
+        assertThat(ad1.isEmpty()).isTrue();
+        ad1.addFirst("new"); // after this call we expect: ["back"]
+        assertThat(ad1.toList()).containsExactly("new").inOrder();
+    }
+
+
+    @Test
+    /** In this test, we dd some elements to a deque and remove them all, then check that addFirst still works. */
+    public void addLastAfterRemoveToEmpty() {
+        Deque61B<String> ad1 = new ArrayDeque61B<>();
+
+        ad1.addLast("front"); // after this call we expect: ["front"]
+        ad1.addLast("middle"); // after this call we expect: ["front", "middle"]
+        ad1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
+        ad1.removeLast();
+        ad1.removeLast();
+        ad1.removeLast();
+        assertThat(ad1.isEmpty()).isTrue();
+        ad1.addLast("new"); // after this call we expect: ["back"]
+        assertThat(ad1.toList()).containsExactly("new").inOrder();
     }
 }
