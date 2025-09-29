@@ -12,6 +12,16 @@ public class ArrayDeque61B<T> implements Deque61B {
         items = (T[]) new Object[8];
     }
 
+    private void resize(int capacity) {
+        T[] a = (T[]) new Object[capacity];
+
+        for (int i = 0; i < size; i++) {
+            a[i] = (T) get(i);
+        }
+        nextFirst = 2 * size - 1;
+        items = a;
+    }
+
     /**
      * Add {@code x} to the front of the deque. Assumes {@code x} is never null.
      *
@@ -19,6 +29,9 @@ public class ArrayDeque61B<T> implements Deque61B {
      */
     @Override
     public void addFirst(Object x) {
+        if (size == items.length) {
+            resize(2 * size);
+        }
         size++;
         items[nextFirst] = (T) x;
         nextFirst = (nextFirst - 1 + items.length) % items.length;
@@ -31,6 +44,9 @@ public class ArrayDeque61B<T> implements Deque61B {
      */
     @Override
     public void addLast(Object x) {
+        if (size == items.length) {
+            resize(2 * size);
+        }
         size++;
         items[(nextFirst + size) % items.length] = (T) x;
     }

@@ -218,4 +218,38 @@ public class ArrayDeque61BTest {
         ad1.addLast("new"); // after this call we expect: ["back"]
         assertThat(ad1.toList()).containsExactly("new").inOrder();
     }
+
+    @Test
+    /** Check that addFirst works when called on a full underlying array */
+    public void addFirstTriggerResizeTest() {
+        Deque61B<Integer> ad1 = new ArrayDeque61B<>();
+
+        for (int i = 8; i > 0; i--) {
+            ad1.addFirst( i);
+        }
+
+        assertThat(ad1.size()).isEqualTo(8);
+
+        ad1.addFirst(0);
+        assertThat(ad1.toList()).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8);
+        ad1.addFirst(-1);
+        assertThat(ad1.toList()).containsExactly(-1, 0, 1, 2, 3, 4, 5, 6, 7, 8);
+    }
+
+    @Test
+    /** Check that addLast works when called on a full underlying array */
+    public void addLastTriggerResizeTest() {
+        Deque61B<Integer> ad1 = new ArrayDeque61B<>();
+
+        for (int i = 8; i > 0; i--) {
+            ad1.addFirst( i);
+        }
+
+        assertThat(ad1.size()).isEqualTo(8);
+
+        ad1.addLast(9);
+        assertThat(ad1.toList()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        ad1.addLast(10);
+        assertThat(ad1.toList()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    }
 }
