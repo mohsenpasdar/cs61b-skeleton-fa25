@@ -251,5 +251,55 @@ public class ArrayDeque61BTest {
         assertThat(ad1.toList()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
         ad1.addLast(10);
         assertThat(ad1.toList()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        for (int i = 11; i <= 17; i++) {
+            ad1.addLast( i);
+        }
+
+        assertThat(ad1.get(16)).isEqualTo(17);
+    }
+
+    @Test
+    /** Checks that the array resizes appropriately after calling removeFirst. */
+    public  void  removeFirstTriggerResize() {
+        Deque61B<Integer> ad1 = new ArrayDeque61B<>();
+
+        for (int i = 8; i > 0; i--) {
+            ad1.addFirst( i);
+        }
+
+        ad1.addLast(9);
+
+        for (int i = 0; i < 5; i++) {
+            ad1.removeFirst();
+        }
+
+        assertThat(ad1.toList()).containsExactly(6, 7, 8, 9);
+
+        // this should trigger items' size to be halved
+        ad1.removeFirst();
+        assertThat(ad1.toList()).containsExactly(7, 8, 9);
+    }
+
+    @Test
+    /** Checks that the array resizes appropriately after calling removeLast. */
+    public  void  removeLastTriggerResize() {
+        Deque61B<Integer> ad1 = new ArrayDeque61B<>();
+
+        for (int i = 8; i > 0; i--) {
+            ad1.addFirst( i);
+        }
+
+        ad1.addLast(9);
+
+        for (int i = 0; i < 5; i++) {
+            ad1.removeFirst();
+        }
+
+        assertThat(ad1.toList()).containsExactly(6, 7, 8, 9);
+
+        // this should trigger items' size to be halved
+        ad1.removeLast();
+        assertThat(ad1.toList()).containsExactly(6, 7, 8);
     }
 }

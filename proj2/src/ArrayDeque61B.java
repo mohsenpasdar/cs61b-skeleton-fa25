@@ -96,6 +96,10 @@ public class ArrayDeque61B<T> implements Deque61B {
             return null;
         }
 
+        if (items.length / size >= 4) {
+            resize(items.length / 2);
+        }
+
         size--;
         nextFirst = (nextFirst + 1) % items.length;
         T output = items[nextFirst];
@@ -112,6 +116,10 @@ public class ArrayDeque61B<T> implements Deque61B {
     public Object removeLast() {
         if (isEmpty()) {
             return null;
+        }
+
+        if (items.length / size >= 4) {
+            resize(items.length / 2);
         }
 
         T output = items[(nextFirst + size) % items.length];
