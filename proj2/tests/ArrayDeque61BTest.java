@@ -300,6 +300,7 @@ public class ArrayDeque61BTest {
 
         // this should trigger items' size to be halved
         ad1.removeLast();
-        assertThat(ad1.toList()).containsExactly(6, 7, 8);
+        // this also tests the iterator behavior
+        assertThat(ad1).containsExactly(6, 7, 8);
     }
 }
