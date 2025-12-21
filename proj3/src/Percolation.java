@@ -2,9 +2,22 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
     // TODO: Add any necessary instance variables.
+    int N;
+    int[][] grid;
 
     public Percolation(int N) {
         // TODO: Fill in this constructor.
+        this.N = N;
+    }
+
+    int encode(int x, int y) {
+        return x * N + y;
+    }
+
+    int[] decode(int id) {
+        int row = id / N;
+        int col = id % N;
+        return new int[] {row, col};
     }
 
     public void open(int row, int col) {

@@ -78,11 +78,26 @@ public class PercolationTest {
         assertThat(p.percolates()).isTrue();
     }
 
-    // TODO: Using the given tests above as a template,
-    //       write some more tests and delete the fail() line
+    //   test weather converting x, y to an id works fine or not
     @Test
-    public void yourFirstTestHere() {
-        fail("Did you write your own tests?");
+    public void encodeTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.encode(3, 4)).isEqualTo(19);
+        assertThat(p.encode(0, 4)).isEqualTo(4);
+        assertThat(p.encode(0, 0)).isEqualTo(0);
+        assertThat(p.encode(4, 4)).isEqualTo(24);
+        assertThat(p.encode(4, 1)).isEqualTo(21);
     }
 
+    //   test weather decoding an id to its corresponding x and y works fine or not
+    @Test
+    public void decodeTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.decode(24)).asList().containsExactly(4, 4);
+        assertThat(p.decode(5)).asList().containsExactly(1, 0);
+        assertThat(p.decode(12)).asList().containsExactly(2, 2);
+        assertThat(p.decode(16)).asList().containsExactly(3, 1);
+    }
 }
