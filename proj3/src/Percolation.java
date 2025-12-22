@@ -21,6 +21,27 @@ public class Percolation {
         int id = encode(row, col);
         openness[id] = true;
         openSites++;
+
+        // connect the current cell to its neighbors:
+        if (col > 0 && isOpen(row, col - 1)) {
+            int leftNeighbor = encode(row, col - 1);
+            weightedUF.union(id, leftNeighbor);
+        }
+
+        if (col < N - 1 && isOpen(row, col + 1)) {
+            int rightNeighbor = encode(row, col + 1);
+            weightedUF.union(id, rightNeighbor);
+        }
+
+        if (row > 0 && isOpen(row - 1, col)) {
+            int topNeighbor = encode(row - 1, col);
+            weightedUF.union(id, topNeighbor);
+        }
+
+        if (row < N - 1 && isOpen(row + 1, col)) {
+            int bottomNeighbor = encode(row + 1, col);
+            weightedUF.union(id, bottomNeighbor);
+        }
     }
 
     public boolean isOpen(int row, int col) {
@@ -31,6 +52,12 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         // TODO: Fill in this method.
+        if (!isOpen(row, col)) return false;
+        int id = encode(row, col);
+        for (int j = 0; j < N; j++) {
+            int topRowId = encode(0, j);
+            if (weightedUF.connected(id, topRowId)) return true;
+        }
         return false;
     }
 
@@ -41,6 +68,9 @@ public class Percolation {
 
     public boolean percolates() {
         // TODO: Fill in this method.
+        for (int j = 0; j < N; j++) {
+            if (isFull(N - 1, j)) return true;
+        }
         return false;
     }
 
@@ -54,6 +84,14 @@ public class Percolation {
         int row = id / N;
         int col = id % N;
         return new int[] {row, col};
+    }
+
+    public static void main(String[] args) {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        System.out.println(p.weightedUF.find(0));
+        System.out.println(p.weightedUF.find(9));
+        System.out.println(p.weightedUF.find(15));
     }
 
 }

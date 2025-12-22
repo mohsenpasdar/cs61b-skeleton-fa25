@@ -132,5 +132,36 @@ public class PercolationTest {
         assertThat(p.weightedUF.count()).isEqualTo(25);
     }
 
+    // test isFull behavior
+    @Test
+    public void isFullTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        p.open(0, 2);
+        assertThat(p.isFull(0, 2)).isEqualTo(true);
+        p.open(2, 2);
+        assertThat(p.isFull(2, 2)).isEqualTo(false);
+        p.open(1, 2);
+        assertThat(p.isFull(1, 2)).isEqualTo(true);
+        assertThat(p.isFull(2, 2)).isEqualTo(true);
+    }
 
+    // test weather system percolates
+    @Test
+    public void percolatesTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        p.open(0, 2);
+        assertThat(p.percolates()).isEqualTo(false);
+        p.open(1, 2);
+        assertThat(p.percolates()).isEqualTo(false);
+        p.open(2, 2);
+        assertThat(p.percolates()).isEqualTo(false);
+        p.open(3, 2);
+        assertThat(p.percolates()).isEqualTo(false);
+        p.open(4, 3);
+        assertThat(p.percolates()).isEqualTo(false);
+        p.open(3, 3);
+        assertThat(p.percolates()).isEqualTo(true);
+    }
 }
