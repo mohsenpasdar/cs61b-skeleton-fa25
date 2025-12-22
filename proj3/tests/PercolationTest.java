@@ -100,4 +100,21 @@ public class PercolationTest {
         assertThat(p.decode(12)).asList().containsExactly(2, 2);
         assertThat(p.decode(16)).asList().containsExactly(3, 1);
     }
+
+//    test open, isOpen, and numberOfOpenSites
+    @Test
+    public void openness() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.numberOfOpenSites()).isEqualTo(0);
+        assertThat(p.isOpen(2, 3)).isEqualTo(false);
+        p.open(2, 3);
+        assertThat(p.isOpen(2, 3)).isEqualTo(true);
+        assertThat(p.numberOfOpenSites()).isEqualTo(1);
+
+        assertThat(p.isOpen(4, 2)).isEqualTo(false);
+        p.open(4, 2);
+        assertThat(p.isOpen(4, 2)).isEqualTo(true);
+        assertThat(p.numberOfOpenSites()).isEqualTo(2);
+    }
 }
