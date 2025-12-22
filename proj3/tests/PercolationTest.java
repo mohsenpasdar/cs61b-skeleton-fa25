@@ -103,7 +103,7 @@ public class PercolationTest {
 
 //    test open, isOpen, and numberOfOpenSites
     @Test
-    public void openness() {
+    public void opennessTest() {
         int N = 5;
         Percolation p = new Percolation(N);
         assertThat(p.numberOfOpenSites()).isEqualTo(0);
@@ -116,5 +116,21 @@ public class PercolationTest {
         p.open(4, 2);
         assertThat(p.isOpen(4, 2)).isEqualTo(true);
         assertThat(p.numberOfOpenSites()).isEqualTo(2);
+
+        p.open(4, 2);
+        assertThat(p.isOpen(4, 2)).isEqualTo(true);
+        assertThat(p.numberOfOpenSites()).isEqualTo(2);
+
+
     }
+
+    //    assert weightedUF behavior
+    @Test
+    public void buildUFtest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.weightedUF.count()).isEqualTo(25);
+    }
+
+
 }
