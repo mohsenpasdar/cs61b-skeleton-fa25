@@ -129,7 +129,7 @@ public class PercolationTest {
     public void buildUFtest() {
         int N = 5;
         Percolation p = new Percolation(N);
-        assertThat(p.weightedUF.count()).isEqualTo(N * N + 1);
+        assertThat(p.weightedUF.count()).isEqualTo(N * N + 2);
     }
 
     // test isFull behavior
@@ -163,5 +163,7 @@ public class PercolationTest {
         assertThat(p.percolates()).isEqualTo(false);
         p.open(3, 3);
         assertThat(p.percolates()).isEqualTo(true);
+        p.open(4, 1);
+        assertThat(p.isFull(4, 1)).isEqualTo(false);
     }
 }
