@@ -17,7 +17,7 @@ public class Percolation {
 
     public void open(int row, int col) {
         // TODO: Fill in this method.
-        if (isOpen(row, col) || numberOfOpenSites() >= 25) return;
+        if (isOpen(row, col) || numberOfOpenSites() >= N * N) return;
         int id = encode(row, col);
         openness[id] = true;
         openSites++;
