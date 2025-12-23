@@ -11,7 +11,7 @@ public class Percolation {
         // TODO: Fill in this constructor.
         this.N = N;
         openness = new boolean[N * N];
-        weightedUF = new WeightedQuickUnionUF(N * N);
+        weightedUF = new WeightedQuickUnionUF(N * N + 1);
         openSites = 0;
     }
 
@@ -42,6 +42,11 @@ public class Percolation {
             int bottomNeighbor = encode(row + 1, col);
             weightedUF.union(id, bottomNeighbor);
         }
+
+        // connect the top row with the source
+        if (row == 0) {
+            weightedUF.union(id, N * N);
+        }
     }
 
     public boolean isOpen(int row, int col) {
@@ -54,11 +59,8 @@ public class Percolation {
         // TODO: Fill in this method.
         if (!isOpen(row, col)) return false;
         int id = encode(row, col);
-        for (int j = 0; j < N; j++) {
-            int topRowId = encode(0, j);
-            if (weightedUF.connected(id, topRowId)) return true;
-        }
-        return false;
+
+        return weightedUF.connected(id, N * N);
     }
 
     public int numberOfOpenSites() {
