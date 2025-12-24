@@ -11,6 +11,7 @@ public class Percolation {
 
     public Percolation(int N) {
         // TODO: Fill in this constructor.
+        if (N <= 0) throw new IllegalArgumentException();
         this.N = N;
         openness = new boolean[N * N];
         weightedUF = new WeightedQuickUnionUF(N * N + 2);
@@ -20,7 +21,8 @@ public class Percolation {
 
     public void open(int row, int col) {
         // TODO: Fill in this method.
-        if (isOpen(row, col) || numberOfOpenSites() >= N * N) return;
+        validate(row, col);
+        if (isOpen(row, col)) return;
         int id = encode(row, col);
         openness[id] = true;
         openSites++;
@@ -64,12 +66,14 @@ public class Percolation {
 
     public boolean isOpen(int row, int col) {
         // TODO: Fill in this method.
+        validate(row, col);
         int id = encode(row, col);
         return openness[id];
     }
 
     public boolean isFull(int row, int col) {
         // TODO: Fill in this method.
+        validate(row, col);
         if (!isOpen(row, col)) return false;
         int id = encode(row, col);
 
@@ -88,6 +92,13 @@ public class Percolation {
 
     // TODO: Add any useful helper methods (we highly recommend this!).
     // TODO: Remove all TODO comments before submitting.
+
+    private void validate(int row, int col) {
+        if (row < 0 || row >= N || col < 0 || col >= N) {
+            throw new IndexOutOfBoundsException("row/col out of bounds");
+        }
+    }
+
     int encode(int x, int y) {
         return x * N + y;
     }
