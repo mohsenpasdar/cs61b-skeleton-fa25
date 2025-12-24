@@ -5,6 +5,8 @@ public class Percolation {
     int N;
     boolean[] openness;
     WeightedQuickUnionUF weightedUF;
+    //create a new disjoint set to address the problem with backwash
+    WeightedQuickUnionUF weightedUF2;
     int openSites;
 
     public Percolation(int N) {
@@ -12,6 +14,7 @@ public class Percolation {
         this.N = N;
         openness = new boolean[N * N];
         weightedUF = new WeightedQuickUnionUF(N * N + 2);
+        weightedUF2 = new WeightedQuickUnionUF(N * N + 1);
         openSites = 0;
     }
 
@@ -26,29 +29,34 @@ public class Percolation {
         if (col > 0 && isOpen(row, col - 1)) {
             int leftNeighbor = encode(row, col - 1);
             weightedUF.union(id, leftNeighbor);
+            weightedUF2.union(id, leftNeighbor);
         }
 
         if (col < N - 1 && isOpen(row, col + 1)) {
             int rightNeighbor = encode(row, col + 1);
             weightedUF.union(id, rightNeighbor);
+            weightedUF2.union(id, rightNeighbor);
         }
 
         if (row > 0 && isOpen(row - 1, col)) {
             int topNeighbor = encode(row - 1, col);
             weightedUF.union(id, topNeighbor);
+            weightedUF2.union(id, topNeighbor);
         }
 
         if (row < N - 1 && isOpen(row + 1, col)) {
             int bottomNeighbor = encode(row + 1, col);
             weightedUF.union(id, bottomNeighbor);
+            weightedUF2.union(id, bottomNeighbor);
         }
 
-        // connect the top row with the source
+        // connect the top row with the virtual top site
         if (row == 0) {
             weightedUF.union(id, N * N);
+            weightedUF2.union(id, N * N);
         }
 
-        // connect the bottom row with the source
+        // connect the bottom row with the virtual bottom site
         if (row == N - 1) {
             weightedUF.union(id, N * N + 1);
         }
@@ -65,7 +73,7 @@ public class Percolation {
         if (!isOpen(row, col)) return false;
         int id = encode(row, col);
 
-        return weightedUF.connected(id, N * N);
+        return weightedUF2.connected(id, N * N);
     }
 
     public int numberOfOpenSites() {
@@ -75,10 +83,6 @@ public class Percolation {
 
     public boolean percolates() {
         // TODO: Fill in this method.
-//        for (int j = 0; j < N; j++) {
-//            if (isFull(N - 1, j)) return true;
-//        }
-//        return false;
         return weightedUF.connected(N * N, N * N + 1);
     }
 
@@ -93,13 +97,4 @@ public class Percolation {
         int col = id % N;
         return new int[] {row, col};
     }
-
-    public static void main(String[] args) {
-        int N = 5;
-        Percolation p = new Percolation(N);
-        System.out.println(p.weightedUF.find(0));
-        System.out.println(p.weightedUF.find(9));
-        System.out.println(p.weightedUF.find(15));
-    }
-
 }
