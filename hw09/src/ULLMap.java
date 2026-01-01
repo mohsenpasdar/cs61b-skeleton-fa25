@@ -136,4 +136,12 @@ public class ULLMap<K, V>  implements Map61B<K, V> {
         throw new UnsupportedOperationException();
     }
 
+    public static void main(String[] args) {
+        Map61B mpa = new ULLMap();
+        System.out.println(mpa.size());
+        mpa.put(5, 4);
+        System.out.println(mpa.size());
+        mpa.put(7, 41);
+        System.out.println(mpa.size());
+    }
 }
