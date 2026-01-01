@@ -4,23 +4,6 @@ import java.util.Set;
 public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
     private int size;
-    /**
-     * Associates the specified value with the specified key in this map.
-     * If the map already contains the specified key, replaces the key's mapping
-     * with the value specified.
-     *
-     * @param key
-     * @param value
-     */
-    @Override
-    public void put(K key, V value) {
-        if (root != null) {
-            root.put(key, value, root);
-        } else {
-            root = new Node(key, value, null, null);
-            size++;
-        }
-    }
 
     private class Node {
         K key;
@@ -51,8 +34,38 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
             }
             return n;
         }
+
+        public V get(K k, Node n) {
+            if (n == null) return null;
+
+            int cmp = k.compareTo(n.key);
+            if (cmp < 0) {
+                return get(k, n.left);
+            } else if (cmp > 0) {
+                return get(k, n.right);
+            } else {
+                return n.val;
+            }
+        }
     }
 
+    /**
+     * Associates the specified value with the specified key in this map.
+     * If the map already contains the specified key, replaces the key's mapping
+     * with the value specified.
+     *
+     * @param key
+     * @param value
+     */
+    @Override
+    public void put(K key, V value) {
+        if (root != null) {
+            root.put(key, value, root);
+        } else {
+            root = new Node(key, value, null, null);
+            size++;
+        }
+    }
 
     /**
      * Returns the value to which the specified key is mapped, or null if this
@@ -62,7 +75,11 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+        if (root != null) {
+            return root.get(key, root);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -125,18 +142,16 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
 
     public static void main(String[] args) {
         Map61B bstMap = new BSTMap();
-        System.out.println(bstMap.size());
         bstMap.put(5, "A");
-        System.out.println(bstMap.size());
         bstMap.put(3, "B");
-        System.out.println(bstMap.size());
         bstMap.put(4, "C");
         bstMap.put(2, "D");
         bstMap.put(7, "E");
         bstMap.put(8, "F");
         bstMap.put(4, "G");
-        System.out.println(bstMap.size());
         bstMap.put(8, "H");
         System.out.println(bstMap.size());
+
+        System.out.println(bstMap.get(0));
     }
 }
