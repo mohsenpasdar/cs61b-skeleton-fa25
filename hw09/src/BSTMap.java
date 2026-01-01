@@ -49,6 +49,19 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
+    private boolean containsKey(K k, Node n) {
+        if (n == null) return false;
+
+        int cmp = k.compareTo(n.key);
+        if (cmp < 0) {
+            return containsKey(k, n.left);
+        } else if (cmp > 0) {
+            return containsKey(k, n.right);
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Associates the specified value with the specified key in this map.
      * If the map already contains the specified key, replaces the key's mapping
@@ -59,12 +72,7 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
-        if (root != null) {
-            root = put(key, value, root);
-        } else {
-            root = new Node(key, value, null, null);
-            size++;
-        }
+        root = put(key, value, root);
     }
 
     /**
@@ -75,11 +83,7 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        if (root != null) {
-            return get(key, root);
-        } else {
-            return null;
-        }
+        return get(key, root);
     }
 
     /**
@@ -89,7 +93,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
-        return false;
+//        return get(key) != null;
+        return containsKey(key, root);
     }
 
     /**
@@ -105,7 +110,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void clear() {
-
+        root = null;
+        size = 0;
     }
 
     /**
@@ -152,6 +158,6 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         bstMap.put(8, "H");
         System.out.println(bstMap.size());
 
-        System.out.println(bstMap.get(8));
+        System.out.println(bstMap.containsKey(80));
     }
 }
