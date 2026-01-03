@@ -62,6 +62,41 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
+    private Node remove(K k, Node n) {
+        if (n == null) return null;
+
+        int cmp = k.compareTo(n.key);
+        if (cmp < 0) {
+            n.left = remove(k, n.left);
+        } else if (cmp > 0) {
+            n.right = remove(k, n.right);
+        } else {
+            if (n.left == null && n.right == null) {
+                return null;
+            } else if (n.left == null) {
+                return n.right;
+            } else if (n.right == null) {
+                return n.left;
+            } else {
+                Node largest = largestNode(n.left);
+                n.key = largest.key;
+                n.val = largest.val;
+                n.left = remove(largest.key, n.left);
+            }
+        }
+        return n;
+    }
+
+    private Node largestNode(Node n) {
+        Node cur = n;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+
+        return cur;
+    }
+
+
     /**
      * Associates the specified value with the specified key in this map.
      * If the map already contains the specified key, replaces the key's mapping
@@ -93,7 +128,6 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
-//        return get(key) != null;
         return containsKey(key, root);
     }
 
@@ -133,7 +167,11 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        V val = get(key);
+        if (val == null) return null;
+        root = remove(key, root);
+        size--;
+        return val;
     }
 
     /**
@@ -147,7 +185,7 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     public static void main(String[] args) {
-        Map61B bstMap = new BSTMap();
+        BSTMap<Integer, String> bstMap = new BSTMap();
         bstMap.put(5, "A");
         bstMap.put(3, "B");
         bstMap.put(4, "C");
@@ -157,7 +195,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         bstMap.put(4, "G");
         bstMap.put(8, "H");
         System.out.println(bstMap.size());
-
-        System.out.println(bstMap.containsKey(80));
+        System.out.println(bstMap.remove(5));
+        System.out.println(bstMap.containsKey(5));
+        System.out.println(bstMap.size());
     }
 }
