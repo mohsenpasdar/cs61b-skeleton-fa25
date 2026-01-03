@@ -22,10 +22,13 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     private class RemoveResult {
         Node updatedSubTree;
         V removedValue;
+        boolean keyExisted;
 
-        RemoveResult(Node updatedSubTree, V removedValue) {
+
+        RemoveResult(Node updatedSubTree, V removedValue, boolean keyExisted) {
             this.removedValue = removedValue;
             this.updatedSubTree = updatedSubTree;
+            this.keyExisted = keyExisted;
         }
     }
 
@@ -74,23 +77,23 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
 
     private RemoveResult remove(K k, Node n) {
         if (n == null) {
-            return new RemoveResult(null, null);
+            return new RemoveResult(null, null, false);
         }
 
         int cmp = k.compareTo(n.key);
         if (cmp < 0) {
             RemoveResult result = remove(k, n.left);
             n.left = result.updatedSubTree;
-            return new RemoveResult(n, result.removedValue);
+            return new RemoveResult(n, result.removedValue, result.keyExisted);
         } else if (cmp > 0) {
             RemoveResult result = remove(k, n.right);
             n.right = result.updatedSubTree;
-            return new RemoveResult(n, result.removedValue);
+            return new RemoveResult(n, result.removedValue, result.keyExisted);
         } else {
             V removedValue = n.val;
 
-            if (n.left == null) return new RemoveResult(n.right, removedValue);
-            if (n.right == null) return new RemoveResult(n.left, removedValue);;
+            if (n.left == null) return new RemoveResult(n.right, removedValue, true);
+            if (n.right == null) return new RemoveResult(n.left, removedValue, true);
 
             Node largest = largestNode(n.left);
             n.key = largest.key;
@@ -98,11 +101,13 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
 
             RemoveResult leftResult = remove(largest.key, n.left);
             n.left = leftResult.updatedSubTree;
-            return new RemoveResult(n, removedValue);
+            return new RemoveResult(n, removedValue, true);
         }
     }
 
     private Node largestNode(Node n) {
+        if (n == null) return null;
+
         Node cur = n;
         while (cur.right != null) {
             cur = cur.right;
@@ -184,7 +189,7 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     public V remove(K key) {
         RemoveResult result = remove(key, root);
         root = result.updatedSubTree;
-        if (result.removedValue != null) {
+        if (result.keyExisted) {
             size--;
         }
         return result.removedValue;
