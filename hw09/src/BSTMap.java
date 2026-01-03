@@ -4,6 +4,8 @@ import java.util.Set;
 public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
     private int size;
+    private V removedValue;
+    private boolean keyExisted;
 
     private class Node {
         K key;
@@ -16,19 +18,6 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
             val = v;
             left = l;
             right = r;
-        }
-    }
-
-    private class RemoveResult {
-        Node updatedSubTree;
-        V removedValue;
-        boolean keyExisted;
-
-
-        RemoveResult(Node updatedSubTree, V removedValue, boolean keyExisted) {
-            this.removedValue = removedValue;
-            this.updatedSubTree = updatedSubTree;
-            this.keyExisted = keyExisted;
         }
     }
 
@@ -75,34 +64,30 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
-    private RemoveResult remove(K k, Node n) {
+    private Node remove(K k, Node n) {
         if (n == null) {
-            return new RemoveResult(null, null, false);
+            return null;
         }
 
         int cmp = k.compareTo(n.key);
         if (cmp < 0) {
-            RemoveResult result = remove(k, n.left);
-            n.left = result.updatedSubTree;
-            return new RemoveResult(n, result.removedValue, result.keyExisted);
+            n.left = remove(k, n.left);
         } else if (cmp > 0) {
-            RemoveResult result = remove(k, n.right);
-            n.right = result.updatedSubTree;
-            return new RemoveResult(n, result.removedValue, result.keyExisted);
+            n.right = remove(k, n.right);
         } else {
-            V removedValue = n.val;
+            removedValue = n.val;
+            keyExisted = true;
 
-            if (n.left == null) return new RemoveResult(n.right, removedValue, true);
-            if (n.right == null) return new RemoveResult(n.left, removedValue, true);
+            if (n.left == null) return n.right;
+            if (n.right == null) return n.left;
 
             Node largest = largestNode(n.left);
             n.key = largest.key;
             n.val = largest.val;
 
-            RemoveResult leftResult = remove(largest.key, n.left);
-            n.left = leftResult.updatedSubTree;
-            return new RemoveResult(n, removedValue, true);
+            n.left = remove(largest.key, n.left);
         }
+        return n;
     }
 
     private Node largestNode(Node n) {
@@ -127,6 +112,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
+        if (key == null) throw new IllegalArgumentException();
+
         root = put(key, value, root);
     }
 
@@ -138,6 +125,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
+        if (key == null) throw new IllegalArgumentException();
+
         return get(key, root);
     }
 
@@ -148,6 +137,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
+        if (key == null) throw new IllegalArgumentException();
+
         return containsKey(key, root);
     }
 
@@ -166,6 +157,8 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     public void clear() {
         root = null;
         size = 0;
+        removedValue = null;
+        keyExisted = false;
     }
 
     /**
@@ -187,12 +180,15 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        RemoveResult result = remove(key, root);
-        root = result.updatedSubTree;
-        if (result.keyExisted) {
+        if (key == null) throw new IllegalArgumentException();
+
+        removedValue = null;
+        keyExisted = false;
+        root = remove(key, root);
+        if (keyExisted) {
             size--;
         }
-        return result.removedValue;
+        return removedValue;
     }
 
     /**
