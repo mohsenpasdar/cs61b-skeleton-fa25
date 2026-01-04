@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
@@ -167,8 +168,19 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> keys = new TreeSet<>();
+        inorderKeys(root, keys);
+        return keys;
     }
+
+    private void inorderKeys(Node n, Set<K> keys) {
+        if (n == null) return;
+
+        inorderKeys(n.left, keys);
+        keys.add(n.key);
+        inorderKeys(n.right, keys);
+    }
+
 
     /**
      * Removes the mapping for the specified key from this map if present,
@@ -215,5 +227,6 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         System.out.println(bstMap.remove(5));
         System.out.println(bstMap.containsKey(5));
         System.out.println(bstMap.size());
+        System.out.println(bstMap.keySet());
     }
 }
