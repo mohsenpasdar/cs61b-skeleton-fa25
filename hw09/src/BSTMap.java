@@ -1,6 +1,4 @@
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
@@ -102,6 +100,62 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         return cur;
     }
 
+    private void inorderKeys(Node n, Set<K> keys) {
+        if (n == null) return;
+
+        inorderKeys(n.left, keys);
+        keys.add(n.key);
+        inorderKeys(n.right, keys);
+    }
+
+    private class BSTMapIter implements Iterator<K> {
+        private Deque<Node> stack;
+
+        public BSTMapIter() {
+            stack = new ArrayDeque<>();
+            pushLeftSpine(root);
+        }
+
+        private void pushLeftSpine(Node n) {
+            while (n != null) {
+                stack.push(n);
+                n = n.left;
+            }
+        }
+
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public K next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node current = stack.pop();
+            K key = current.key;
+            if (current.right != null) {
+                pushLeftSpine(current.right);
+            }
+            return key;
+        }
+    }
 
     /**
      * Associates the specified value with the specified key in this map.
@@ -173,14 +227,6 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         return keys;
     }
 
-    private void inorderKeys(Node n, Set<K> keys) {
-        if (n == null) return;
-
-        inorderKeys(n.left, keys);
-        keys.add(n.key);
-        inorderKeys(n.right, keys);
-    }
-
 
     /**
      * Removes the mapping for the specified key from this map if present,
@@ -209,9 +255,7 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
      * @return an Iterator.
      */
     @Override
-    public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
-    }
+    public Iterator<K> iterator() { return new BSTMapIter(); }
 
     public static void main(String[] args) {
         BSTMap<Integer, String> bstMap = new BSTMap();
@@ -222,11 +266,18 @@ public class BSTMap <K extends Comparable<K>, V> implements Map61B<K, V> {
         bstMap.put(7, "E");
         bstMap.put(8, "F");
         bstMap.put(4, "G");
-        bstMap.put(8, "H");
-        System.out.println(bstMap.size());
-        System.out.println(bstMap.remove(5));
-        System.out.println(bstMap.containsKey(5));
-        System.out.println(bstMap.size());
-        System.out.println(bstMap.keySet());
+        bstMap.put(6, "j");
+        bstMap.put(1, "n");
+        bstMap.put(-4, "H");
+        bstMap.put(18, "H");
+        bstMap.put(15, "H");
+        bstMap.put(0, "H");
+        bstMap.put(-4, "H");
+        bstMap.put(-2, "H");
+        bstMap.put(12, "H");
+
+        for (Integer key : bstMap) {
+            System.out.println(key);
+        }
     }
 }
